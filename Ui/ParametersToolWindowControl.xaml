@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="VSRipGrep.Ui.ParametersToolWindowControl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+            xmlns:Models="clr-namespace:VSRipGrep.Models"
+            Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+            Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+            mc:Ignorable="d"
+            d:DesignHeight="180" d:DesignWidth="250"
+            Name="RipGrepParameters">
+    <StackPanel Orientation="Vertical" Margin="10" Height="Auto">
+        <TextBlock Margin="0,0,0,4"><Run Text="Find what:"/></TextBlock>
+        <TextBox x:Name="Pattern" Margin="0,0,0,4" TextWrapping="NoWrap" Text="{Binding Path=Pattern}"/>
+        <TextBlock Margin="0,0,0,4"><Run Text="Look in:"/></TextBlock>
+        <Grid Margin="0,0,0,8" Height="Auto" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox TextWrapping="NoWrap" Text="{Binding Path=Path, Mode=TwoWay}"/>
+            <Button Content=" ... " Grid.Column="2" Click="SelectFolder_Click"/>
+        </Grid>
+        <Separator Margin="0,0,0,4" />
+        <Expander Header="Find options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}">
+            <StackPanel Orientation="Vertical" Margin="10,4,4,4">
+                <CheckBox IsChecked="{Binding Path=MatchCase}" Margin="0,0,0,4" Content="Match case" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox IsChecked="{Binding Path=UseRegularExpressions}" Margin="0,0,0,4" Content="Use Regular Expressions" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox IsChecked="{Binding Path=InvertMatching}" Margin="0,0,0,4" Content="Invert matching" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+            </StackPanel>
+        </Expander>
+        <Expander Header="File options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}">
+            <StackPanel Orientation="Vertical" Margin="10,4,4,4">
+                <CheckBox IsChecked="{Binding Path=IncludeBinaryFiles}" Margin="0,0,0,4" Content="Include binary files" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox IsChecked="{Binding Path=IncludeHiddenFilesOrDirectories}" Margin="0,0,0,4" Content="Include hidden files or directories" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox IsChecked="{Binding Path=RespectIgnoreFiles}" Margin="0,0,0,4" Content="Respect ignore files (.gitignore, etc.)" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+            </StackPanel>
+        </Expander>
+        <Button HorizontalAlignment="Right" Content="Find All" Width="75" Click="FindAll_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text.Length, ElementName=Pattern, UpdateSourceTrigger=PropertyChanged}" Value="0">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackPanel>
+</UserControl>
