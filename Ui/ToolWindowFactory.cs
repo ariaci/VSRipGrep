@@ -6,11 +6,11 @@ namespace VSRipGrep.Ui
 {
     internal sealed class ToolWindowFactory
     {
-        private readonly AsyncPackage package;
+        internal static AsyncPackage Package { get; private set; }
 
         private ToolWindowFactory(AsyncPackage package)
         {
-            this.package = package;
+            Package = package;
         }
 
         public static void Initialize(AsyncPackage package)
@@ -35,7 +35,7 @@ namespace VSRipGrep.Ui
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                var window = Instance.package.FindToolWindow(typeof(ToolWindow), 0, true);
+                var window = Package.FindToolWindow(typeof(ToolWindow), 0, true);
                 if (window == null || window.Frame == null)
                 {
                     throw new NotSupportedException("Cannot create tool window");

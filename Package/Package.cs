@@ -28,7 +28,6 @@ namespace VSRipGrep.Package
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(ResultsToolWindow))]
     [ProvideOptionPage(typeof(Configuration), "VSRipGrep Package", "General", 0, 0, true)]
     [ProvideToolWindow(typeof(ParametersToolWindow))]
     [ProvideToolWindow(typeof(ResultsToolWindow))]

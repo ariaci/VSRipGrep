@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,28 +22,46 @@ namespace VSRipGrep.Models
         {
             get
             {
-                return File + " (" + Lines.Count.ToString() + ")";
+                return Lines.Count > 0 ? File + " (" + Lines.Count.ToString() + ")" : File;
             }
         }
 
         internal void AddRipGrepOutput(string output)
         {
-            var line = output.Split(":".ToCharArray(), 2);
-            if (line.Length != 2)
+            var splittedOutput = output.Split(":".ToCharArray(), 3);
+            if (splittedOutput.Length != 2 && splittedOutput.Length != 3)
             {
                 return;
             }
 
-            ResultLineModel resultLine = null;
-            var lineNumber = Convert.ToUInt32(line[0]);
-            if (!Lines.TryGetValue(lineNumber, out resultLine))
+            ResultLineModel resultLine;
+
+            var line = Convert.ToUInt32(splittedOutput[0]);
+            var column = Convert.ToUInt32(splittedOutput[1]);
+            if (!Lines.TryGetValue(line, out resultLine))
             {
-                resultLine = new ResultLineModel(this, lineNumber, line[1]);
-                Lines.Add(lineNumber, resultLine);
+                resultLine = new ResultLineModel(this, line, column, splittedOutput[2]);
+                Lines.Add(line, resultLine);
                 ResultLines.Add(resultLine);
 
                 PropertyChanged(this, new PropertyChangedEventArgs("Text"));
             }
+        }
+
+        internal Window GotoFile()
+        {
+            if (System.IO.File.Exists(File) == false)
+            {
+                return null;
+            }
+
+            return ThreadHelper.JoinableTaskFactory.Run(async delegate
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
+                return dte?.ItemOperations.OpenFile(File);
+            });
         }
 
         #region INotifyPropertyChanged Members

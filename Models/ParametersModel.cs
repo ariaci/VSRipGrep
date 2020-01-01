@@ -9,6 +9,11 @@ namespace VSRipGrep.Models
 {
     internal class ParametersModel : INotifyPropertyChanged
     {
+        public ParametersModel Clone()
+        {
+            return MemberwiseClone() as ParametersModel;
+        }
+
         private void propertySetter<T>(ref T modelValue, T value, string propertyName) where T: IComparable
         {
             if (value.CompareTo(modelValue) == 0)
@@ -23,7 +28,7 @@ namespace VSRipGrep.Models
             }
         }
 
-        private string m_path = "D:\\TEMP";
+        private string m_path = "C:\\";
         public string Path
         {
             get
@@ -36,7 +41,7 @@ namespace VSRipGrep.Models
             }
         }
 
-        public string Pattern { get; set; } = "rg.exe";
+        public string Pattern { get; set; } = "";
         public bool MatchCase { get; set; } = true;
         public bool UseRegularExpressions { get; set; } = false;
         public bool InvertMatching { get; set; } = false;

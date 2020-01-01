@@ -1,8 +1,11 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using System;
+using System.Diagnostics;
 using System.Threading;
+using VSRipGrep.Builder;
 using VSRipGrep.Models;
+using VSRipGrep.Ui;
 
 namespace VSRipGrep.Tasks
 {
@@ -18,7 +21,13 @@ namespace VSRipGrep.Tasks
         }
         private JoinableTask Task { get; set; }
 
+        internal ParametersModel Parameters { get; private set; }
         public ResultFilesModel Results { get; private set; } = new ResultFilesModel();
+
+        internal RipGrepTask(ParametersModel parameters)
+        {
+            Parameters = parameters;
+        }
 
         public void Run()
         {
@@ -32,15 +41,13 @@ namespace VSRipGrep.Tasks
 
         static private void ExecuteRipGrep(RipGrepTask ripGrepTask)
         {
-            string[] testValues = {
-                    "D:\\TEMP\\Test\\App.xaml.cs\013:            DispatcherHelper.Initialize();",
-                    "D:\\TEMP\\Test\\MainWindow.xaml.cs\012:        /// Initializes a new instance of the MainWindow class.",
-                    "D:\\TEMP\\Test\\MainWindow.xaml.cs\016:            InitializeComponent();"
-                };
+            var ripGrepProcess = RipGrepProcessBuilder.Build(ripGrepTask.Parameters);
 
-            foreach (var value in testValues)
+            ripGrepProcess.Start();
+            while (!ripGrepProcess.StandardOutput.EndOfStream)
             {
-                if (ripGrepTask.Token.WaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
+                string resultLine = ripGrepProcess.StandardOutput.ReadLine();
+                if (ripGrepTask.Token.WaitHandle.WaitOne(0))
                 {
                     break;
                 }
@@ -48,8 +55,28 @@ namespace VSRipGrep.Tasks
                 ThreadHelper.JoinableTaskFactory.Run(async delegate
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                    ripGrepTask.Results.AddRipGrepOutput(value);
+                    if (ripGrepTask.Parameters.InvertMatching)
+                    {
+                        var firstColon = resultLine.IndexOf(':');
+                        if (firstColon >= 0)
+                        {
+                            resultLine = resultLine.Substring(0, firstColon);
+                        }
+                    }
+
+                    ripGrepTask.Results.AddRipGrepOutput(resultLine, ripGrepTask.Parameters.Path);
                 });
+            }
+
+            try
+            {
+                if (!ripGrepProcess.HasExited)
+                {
+                    ripGrepProcess.Kill();
+                }
+            }
+            catch (Exception)
+            { 
             }
 
             ripGrepTask.Task = null;

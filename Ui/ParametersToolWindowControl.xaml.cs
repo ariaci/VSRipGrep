@@ -26,7 +26,7 @@
             var resultsToolWindowControl = ToolWindowFactory.ShowResultsToolWindow()?.Content as ResultsToolWindowControl;
             if (resultsToolWindowControl != null)
             {
-                var ripGrepTask = new RipGrepTask();
+                var ripGrepTask = new RipGrepTask(Parameters.Clone());
 
                 resultsToolWindowControl.ResultTask = ripGrepTask;
                 ripGrepTask.Run();

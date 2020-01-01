@@ -9,13 +9,15 @@ namespace VSRipGrep.Models
         private Dictionary<string, ResultFileModel> Files { get; set; } = new Dictionary<string, ResultFileModel>();
         public ObservableCollection<ResultFileModel> ResultFiles { get; private set; } = new ObservableCollection<ResultFileModel>();
 
-        internal void AddRipGrepOutput(string output)
+        internal void AddRipGrepOutput(string output, string basePath)
         {
-            var file = output.Split('\0');
-            if (file.Length != 2)
+            var file = output.Split(":".ToCharArray(), 2);
+            if (file.Length != 1 && file.Length != 2)
             {
                 return;
             }
+
+            file[0] = System.IO.Path.Combine(basePath, file[0]);
 
             ResultFileModel resultFile = null;
             if (!Files.TryGetValue(file[0], out resultFile))
@@ -25,7 +27,10 @@ namespace VSRipGrep.Models
                 ResultFiles.Add(resultFile);
             }
 
-            resultFile.AddRipGrepOutput(file[1]);
+            if (file.Length == 2)
+            {
+                resultFile.AddRipGrepOutput(file[1]);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace VSRipGrep.Package
         [Category("General")]
         [DisplayName("VSRipGrep executable")]
         [Description("Location of VSRipGrep executable")]
-        [EditorAttribute(typeof(FileNameEditor), typeof(UITypeEditor))]
+        [Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public string RipGrepExecutable { get; set; } = "rg.exe";
     }
 }

@@ -29,7 +29,12 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextColorKey}}" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource {x:Static vsp:EnvironmentColors.ToolWindowTextColorKey}}" />
                 <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
-                    <TextBlock Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                    <TextBlock x:Name="File" Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" />
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding ResultLines.Count}" Value="0">
+                            <Setter TargetName="File" Property="FontWeight" Value="Normal"/>
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type Models:ResultLineModel}">
                     <TextBlock Text="{Binding Path=Text}" />

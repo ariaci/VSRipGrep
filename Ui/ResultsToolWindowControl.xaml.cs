@@ -38,6 +38,7 @@
         /// </summary>
         public ResultsToolWindowControl()
         {
+            DataContext = new ResultFilesModel();
             this.InitializeComponent();
         }
 
@@ -45,9 +46,19 @@
         {
             var treeView = e.Source as TreeView;
             var selectedUiElement = treeView?.InputHitTest(e.GetPosition(treeView)) as TextBlock;
+            var selectedFileModel = selectedUiElement?.DataContext as ResultFileModel;
             var selectedLineModel = selectedUiElement?.DataContext as ResultLineModel;
 
-            selectedLineModel?.GotoLocation();
+            if (selectedFileModel != null && selectedFileModel.ResultLines.Count == 0)
+            {
+                selectedFileModel.GotoFile();
+                e.Handled = true;
+            }
+            else if (selectedLineModel != null)
+            {
+                selectedLineModel.GotoLocation();
+                e.Handled = true;
+            }
         }
     }
 }

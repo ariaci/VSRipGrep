@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Builder\RipGrepProcessBuilder.cs" />
     <Compile Include="Models\ParametersModel.cs" />
     <Compile Include="Models\ResultFileModel.cs" />
     <Compile Include="Models\ResultLineModel.cs" />
