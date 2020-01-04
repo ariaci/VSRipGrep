@@ -40,6 +40,27 @@
                     <TextBlock Text="{Binding Path=Text}" />
                 </DataTemplate>
             </TreeView.Resources>
+            <TreeView.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ResultFiles.Count}" Value="0">
+                            <Setter Property="TreeView.Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.Style>
         </TreeView>
+        <TextBlock Text="No search results available yet" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=Results, Path=Visibility}" Value="Hidden">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
     </Grid>
 </UserControl>
