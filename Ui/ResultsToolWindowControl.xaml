@@ -11,56 +11,74 @@
             mc:Ignorable="d"
             d:DesignHeight="300" d:DesignWidth="700"
             x:Name="RipGrepResults">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TreeView x:Name="Results" ItemsSource="{Binding ResultFiles}"
-             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
-             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
-             MouseDoubleClick="Results_MouseDoubleClick">
-            <TreeView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveColorKey}}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveTextColorKey}}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveColorKey}}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextColorKey}}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource {x:Static vsp:EnvironmentColors.ToolWindowTextColorKey}}" />
-                <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
-                    <TextBlock x:Name="File" Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" />
-                    <HierarchicalDataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding ResultLines.Count}" Value="0">
-                            <Setter TargetName="File" Property="FontWeight" Value="Normal"/>
-                        </DataTrigger>
-                    </HierarchicalDataTemplate.Triggers>
-                </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type Models:ResultLineModel}">
-                    <TextBlock Text="{Binding Path=Text}" />
-                </DataTemplate>
-            </TreeView.Resources>
-            <TreeView.Style>
-                <Style>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ResultFiles.Count}" Value="0">
-                            <Setter Property="TreeView.Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TreeView.Style>
-        </TreeView>
-        <TextBlock Text="No search results available yet" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
+    <DockPanel LastChildFill="True">
+        <ProgressBar IsIndeterminate="True" Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}" DockPanel.Dock="Bottom">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar">
                     <Setter Property="Visibility" Value="Hidden"/>
+                    <Setter Property="Height" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=Results, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding IsSearching, ElementName=RipGrepResults}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Height" Value="Auto"/>
+                            <Setter Property="Margin" Value="4"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>
-        </TextBlock>
-    </Grid>
+            </ProgressBar.Style>
+        </ProgressBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TreeView x:Name="Results" ItemsSource="{Binding ResultFiles}"
+                    Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+                    Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+                    MouseDoubleClick="Results_MouseDoubleClick">
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveColorKey}}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveTextColorKey}}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveColorKey}}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextColorKey}}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource {x:Static vsp:EnvironmentColors.ToolWindowTextColorKey}}" />
+                    <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
+                        <TextBlock x:Name="File" Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" />
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding ResultLines.Count}" Value="0">
+                                <Setter TargetName="File" Property="FontWeight" Value="Normal"/>
+                            </DataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type Models:ResultLineModel}">
+                        <TextBlock Text="{Binding Path=Text}" />
+                    </DataTemplate>
+                </TreeView.Resources>
+                <TreeView.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ResultFiles.Count}" Value="0">
+                                <Setter Property="TreeView.Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.Style>
+            </TreeView>
+            <TextBlock Text="No search results available yet" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=Results, Path=Visibility}" Value="Hidden">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </DockPanel>
 </UserControl>

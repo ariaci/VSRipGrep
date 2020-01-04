@@ -44,7 +44,7 @@ namespace VSRipGrep.Models
                 Lines.Add(line, resultLine);
                 ResultLines.Add(resultLine);
 
-                PropertyChanged(this, new PropertyChangedEventArgs("Text"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Text"));
             }
         }
 

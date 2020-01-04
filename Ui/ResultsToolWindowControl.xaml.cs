@@ -3,13 +3,25 @@
     using VSRipGrep.Models;
     using System.Windows.Controls;
     using VSRipGrep.Tasks;
+    using System.ComponentModel;
+    using System;
 
     /// <summary>
     /// Interaction logic for ParametersToolWindowControl.
     /// </summary>
-    public partial class ResultsToolWindowControl : UserControl
+    public partial class ResultsToolWindowControl : UserControl, INotifyPropertyChanged
     {
         private RipGrepTask m_ripGrepTask = null;
+
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        private void OnRipGrepTaskChanged(object sender, EventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSearching"));
+        }
+
         internal RipGrepTask ResultTask
         { 
             get
@@ -26,10 +38,22 @@
                 if (m_ripGrepTask != null)
                 {
                     m_ripGrepTask.Cancel();
+                    m_ripGrepTask.TaskChanged -= OnRipGrepTaskChanged;
                 }
 
                 DataContext = value?.Results;
                 m_ripGrepTask = value;
+                m_ripGrepTask.TaskChanged += OnRipGrepTaskChanged;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSearching"));
+            }
+        }
+
+        public bool IsSearching
+        {
+            get
+            {
+                return m_ripGrepTask != null && m_ripGrepTask.IsRunning;
             }
         }
 

@@ -1,11 +1,9 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using System;
-using System.Diagnostics;
 using System.Threading;
 using VSRipGrep.Builder;
 using VSRipGrep.Models;
-using VSRipGrep.Ui;
 
 namespace VSRipGrep.Tasks
 {
@@ -19,17 +17,37 @@ namespace VSRipGrep.Tasks
                 return TokenSource.Token;
             }
         }
-        private JoinableTask Task { get; set; }
+
+        public event EventHandler TaskChanged;
+
+        private JoinableTask m_task;
+        private JoinableTask Task
+        {
+            get
+            {
+                return m_task;
+            }
+            set
+            {
+                if (m_task == value)
+                {
+                    return;
+                }
+
+                m_task = value;
+                TaskChanged?.Invoke(this, null);
+            }
+        }
 
         internal ParametersModel Parameters { get; private set; }
-        public ResultFilesModel Results { get; private set; } = new ResultFilesModel();
+        internal ResultFilesModel Results { get; private set; } = new ResultFilesModel();
 
         internal RipGrepTask(ParametersModel parameters)
         {
             Parameters = parameters;
         }
 
-        public void Run()
+        internal void Run()
         {
             Task = ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
@@ -37,6 +55,14 @@ namespace VSRipGrep.Tasks
                     ExecuteRipGrep(this);
                 });
             });
+        }
+
+        internal bool IsRunning
+        {
+            get
+            {
+                return Task != null;
+            }
         }
 
         static private void ExecuteRipGrep(RipGrepTask ripGrepTask)
@@ -82,7 +108,7 @@ namespace VSRipGrep.Tasks
             ripGrepTask.Task = null;
         }
 
-        public void Cancel()
+        internal void Cancel()
         {
             if (Task == null)
             {
