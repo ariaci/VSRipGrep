@@ -47,6 +47,9 @@
                         <DataTrigger Binding="{Binding IsValidPath}" Value="False">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding IsValidRipGrepExecutable, ElementName=RipGrepParameters}" Value="False">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
