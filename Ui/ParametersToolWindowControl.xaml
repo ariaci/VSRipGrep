@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox TextWrapping="NoWrap" Text="{Binding Path=Path, Mode=TwoWay}"/>
+            <TextBox TextWrapping="NoWrap" Text="{Binding Path=Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content=" ... " Grid.Column="2" Click="SelectFolder_Click"/>
         </Grid>
         <Separator Margin="0,0,0,4" />
@@ -41,7 +41,10 @@
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text.Length, ElementName=Pattern, UpdateSourceTrigger=PropertyChanged}" Value="0">
+                        <DataTrigger Binding="{Binding Text.Length, ElementName=Pattern}" Value="0">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsValidPath}" Value="False">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>

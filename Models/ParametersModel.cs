@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VSRipGrep.Models
 {
@@ -22,10 +18,7 @@ namespace VSRipGrep.Models
             }
 
             modelValue = value;
-            if (this.PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private string m_path = "C:\\";
@@ -38,6 +31,15 @@ namespace VSRipGrep.Models
             set
             {
                 propertySetter(ref m_path, value, "Path");
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsValidPath"));
+            }
+        }
+
+        public bool IsValidPath
+        {
+            get
+            {
+                return System.IO.Directory.Exists(Path);
             }
         }
 
