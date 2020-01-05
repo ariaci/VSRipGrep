@@ -3,11 +3,15 @@
     <Metadata>
         <Identity Id="VSRipGrep.0384c66b-90a9-4da8-bc7b-116b51f554b4" Version="1.0" Language="en-US" Publisher="Patrick Morgenstern" />
         <DisplayName>VSRipGrep</DisplayName>
-        <Description xml:space="preserve">Empty VSIX Project.</Description>
+        <Description xml:space="preserve">RipGrep for Visual Studio</Description>
+        <MoreInfo>https://github.com/ariaci/VSRipGrep</MoreInfo>
         <License>LICENSE</License>
+        <Tags>RipGrep;rg;Find;Search;Pattern;Regex</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+        <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Enterprise" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
