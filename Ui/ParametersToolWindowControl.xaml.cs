@@ -69,5 +69,25 @@
                 }
             }
         }
+
+        private void Options_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var toolWindow = Window.GetWindow(this);
+            if (toolWindow == null || !toolWindow.IsInitialized)
+            {
+                return;
+            }
+
+            if (e.PreviousSize.Height == 0)
+            {
+                return;
+            }
+
+            var height = toolWindow.Height + e.NewSize.Height - e.PreviousSize.Height;
+
+            toolWindow.MinHeight = height;
+            toolWindow.MaxHeight = height;
+            toolWindow.Height = height;
+        }
     }
 }
