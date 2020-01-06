@@ -12,17 +12,18 @@
             d:DesignHeight="300" d:DesignWidth="700"
             x:Name="RipGrepResults">
     <DockPanel LastChildFill="True">
-        <ProgressBar IsIndeterminate="True" Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}" DockPanel.Dock="Bottom">
+        <ProgressBar IsIndeterminate="True" 
+                     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}" 
+                     Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
+                     DockPanel.Dock="Top">
             <ProgressBar.Style>
                 <Style TargetType="ProgressBar">
                     <Setter Property="Visibility" Value="Hidden"/>
                     <Setter Property="Height" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSearching, ElementName=RipGrepResults}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Setter Property="Height" Value="Auto"/>
-                            <Setter Property="Margin" Value="4"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

@@ -50,6 +50,7 @@
     <Compile Include="Models\ResultFileModel.cs" />
     <Compile Include="Models\ResultLineModel.cs" />
     <Compile Include="Models\ResultFilesModel.cs" />
+    <Compile Include="Models\ResultModelBase.cs" />
     <Compile Include="Package\Configuration.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -57,6 +58,8 @@
     <Compile Include="Commands\RipGrepCommand.cs" />
     <Compile Include="Package\Package.cs" />
     <Compile Include="Tasks\RipGrepTask.cs" />
+    <Compile Include="Tools\ResultModelHelper.cs" />
+    <Compile Include="Tools\TreeViewHelper.cs" />
     <Compile Include="Ui\ResultsToolWindow.cs" />
     <Compile Include="Ui\ResultsToolWindowControl.xaml.cs">
       <DependentUpon>ResultsToolWindowControl.xaml</DependentUpon>
@@ -97,9 +100,6 @@
     <VSCTCompile Include="Package\RipGrepPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\RipGrepCommand.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Ui\ResultsToolWindowControl.xaml">

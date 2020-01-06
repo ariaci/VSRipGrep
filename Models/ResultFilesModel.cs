@@ -4,12 +4,42 @@ using System.Collections.ObjectModel;
 
 namespace VSRipGrep.Models
 {
-    class ResultFilesModel
+    public class ResultFilesModel : ResultModelBase
     {
+        internal string BasePath { get; private set; }
         private Dictionary<string, ResultFileModel> Files { get; set; } = new Dictionary<string, ResultFileModel>();
         public ObservableCollection<ResultFileModel> ResultFiles { get; private set; } = new ObservableCollection<ResultFileModel>();
 
-        internal void AddRipGrepOutput(string output, string basePath)
+        internal ResultFilesModel(string basePath)
+        {
+            BasePath = basePath;
+        }
+
+        public override string Text 
+        { 
+            get
+            {
+                return BasePath;
+            }
+        }
+
+        public override ResultModelBase Next
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public override ResultModelBase Previous
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        internal void AddRipGrepOutput(string output)
         {
             var file = output.Split(":".ToCharArray(), 2);
             if (file.Length != 1 && file.Length != 2)
@@ -17,12 +47,12 @@ namespace VSRipGrep.Models
                 return;
             }
 
-            file[0] = System.IO.Path.Combine(basePath, file[0]);
+            file[0] = System.IO.Path.Combine(BasePath, file[0]);
 
             ResultFileModel resultFile = null;
             if (!Files.TryGetValue(file[0], out resultFile))
             {
-                resultFile = new ResultFileModel(file[0]);
+                resultFile = new ResultFileModel(this, file[0]);
                 Files.Add(file[0], resultFile);
                 ResultFiles.Add(resultFile);
             }

@@ -7,22 +7,44 @@ using System.ComponentModel;
 
 namespace VSRipGrep.Models
 {
-    public class ResultFileModel : INotifyPropertyChanged
+    public class ResultFileModel : ResultModelBase, INotifyPropertyChanged
     {
+        internal ResultFilesModel Files { get; private set; }
+
         public string File { get; private set; }
         private Dictionary<uint, ResultLineModel> Lines { get; set; } = new Dictionary<uint, ResultLineModel>();
         public ObservableCollection<ResultLineModel> ResultLines { get; private set; } = new ObservableCollection<ResultLineModel>();
 
-        internal ResultFileModel(string file)
+        internal ResultFileModel(ResultFilesModel files, string file)
         {
             File = file;
+            Files = files;
         }
 
-        public string Text
+        public override string Text
         {
             get
             {
                 return Lines.Count > 0 ? File + " (" + Lines.Count.ToString() + ")" : File;
+            }
+        }
+
+        public override ResultModelBase Next
+        {
+            get
+            {
+                var thisIndex = Files == null ? -1 : Files.ResultFiles.IndexOf(this);
+                return thisIndex >= 0 && thisIndex < Files.ResultFiles.Count - 1 
+                    ? Files.ResultFiles[thisIndex + 1] : null;
+            }
+        }
+
+        public override ResultModelBase Previous
+        {
+            get
+            {
+                var thisIndex = Files == null ? -1 : Files.ResultFiles.IndexOf(this);
+                return thisIndex > 0 ? Files.ResultFiles[thisIndex - 1] : null;
             }
         }
 

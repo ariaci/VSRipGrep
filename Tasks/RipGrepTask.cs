@@ -40,11 +40,12 @@ namespace VSRipGrep.Tasks
         }
 
         internal ParametersModel Parameters { get; private set; }
-        internal ResultFilesModel Results { get; private set; } = new ResultFilesModel();
+        internal ResultFilesModel Results { get; private set; }
 
         internal RipGrepTask(ParametersModel parameters)
         {
             Parameters = parameters;
+            Results = new ResultFilesModel(parameters?.Path);
         }
 
         internal void Run()
@@ -90,7 +91,7 @@ namespace VSRipGrep.Tasks
                         }
                     }
 
-                    ripGrepTask.Results.AddRipGrepOutput(resultLine, ripGrepTask.Parameters.Path);
+                    ripGrepTask.Results.AddRipGrepOutput(resultLine);
                 });
             }
 

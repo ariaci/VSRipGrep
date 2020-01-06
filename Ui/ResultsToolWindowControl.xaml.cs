@@ -5,6 +5,9 @@
     using VSRipGrep.Tasks;
     using System.ComponentModel;
     using System;
+    using Microsoft.VisualStudio.OLE.Interop;
+    using Microsoft.VisualStudio;
+    using VSRipGrep.Tools;
 
     /// <summary>
     /// Interaction logic for ParametersToolWindowControl.
@@ -62,25 +65,84 @@
         /// </summary>
         public ResultsToolWindowControl()
         {
-            DataContext = new ResultFilesModel();
+            DataContext = new ResultFilesModel(string.Empty);
             this.InitializeComponent();
+        }
+
+        public void ExecuteCommand(VSConstants.VSStd97CmdID commandId)
+        {
+            if (commandId != VSConstants.VSStd97CmdID.NextLocation
+                && commandId != VSConstants.VSStd97CmdID.PreviousLocation)
+            {
+                return;
+            }
+
+            var treeView = FindName("Results") as TreeView;
+            if (treeView == null)
+            {
+                return;
+            }
+
+            var selectedItem = treeView.SelectedItem as ResultModelBase;
+            if (selectedItem == null)
+            {
+                selectedItem = DataContext as ResultModelBase;
+            }
+
+            var nextItem = commandId == VSConstants.VSStd97CmdID.NextLocation
+                ? ResultModelHelper.Next(selectedItem) : ResultModelHelper.Previous(selectedItem);
+
+            TreeViewHelper.ExpandTreeViewItemModel(treeView, nextItem);
+
+            var treeViewItem = TreeViewHelper.TreeViewItemFromModel(treeView, nextItem);
+            if (treeViewItem != null)
+            {
+                treeViewItem.IsSelected = true;
+
+                treeViewItem.BringIntoView();
+                var scrollViewer = treeView.Template.FindName("_tv_scrollviewer_", treeView) as ScrollViewer;
+                if (scrollViewer != null)
+                {
+                    scrollViewer.ScrollToLeftEnd();
+                }
+
+                ResultModelHelper.Edit(nextItem);
+            }
+        }
+
+        public OLECMDF QueryCommandStatus(VSConstants.VSStd97CmdID commandId)
+        {
+            if (commandId != VSConstants.VSStd97CmdID.NextLocation 
+                && commandId != VSConstants.VSStd97CmdID.PreviousLocation)
+            {
+                return OLECMDF.OLECMDF_INVISIBLE | OLECMDF.OLECMDF_DEFHIDEONCTXTMENU;
+            }
+
+            var treeView = FindName("Results") as TreeView;
+            if (treeView == null)
+            {
+                return OLECMDF.OLECMDF_INVISIBLE | OLECMDF.OLECMDF_DEFHIDEONCTXTMENU;
+            }
+
+            var selectedValue = treeView.IsVisible ? treeView.SelectedValue as ResultModelBase : null;
+            if (selectedValue == null)
+            {
+                selectedValue = DataContext as ResultModelBase;
+            }
+
+            var nextValue = commandId == VSConstants.VSStd97CmdID.NextLocation 
+                ? ResultModelHelper.Next(selectedValue) : ResultModelHelper.Previous(selectedValue);
+
+            return nextValue == null ? OLECMDF.OLECMDF_SUPPORTED : OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_ENABLED;
         }
 
         private void Results_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var treeView = e.Source as TreeView;
             var selectedUiElement = treeView?.InputHitTest(e.GetPosition(treeView)) as TextBlock;
-            var selectedFileModel = selectedUiElement?.DataContext as ResultFileModel;
-            var selectedLineModel = selectedUiElement?.DataContext as ResultLineModel;
 
-            if (selectedFileModel != null && selectedFileModel.ResultLines.Count == 0)
+            if (ResultModelHelper.Edit(selectedUiElement?.DataContext as ResultModelBase))
             {
-                selectedFileModel.GotoFile();
-                e.Handled = true;
-            }
-            else if (selectedLineModel != null)
-            {
-                selectedLineModel.GotoLocation();
                 e.Handled = true;
             }
         }

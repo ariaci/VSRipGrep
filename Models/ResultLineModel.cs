@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Shell;
 
 namespace VSRipGrep.Models
 {
-    public class ResultLineModel
+    public class ResultLineModel : ResultModelBase
     {
         internal uint Line { get; private set; } = 0;
         internal uint Column{ get; private set; } = 0;
@@ -18,11 +18,30 @@ namespace VSRipGrep.Models
             Content = content;
         }
 
-        public string Text
+        public override string Text
         {
             get
             {
                 return Line.ToString() + ", " + Column.ToString()+ ": " + Content;
+            }
+        }
+
+        public override ResultModelBase Next
+        {
+            get
+            {
+                var thisIndex = File == null ? -1 : File.ResultLines.IndexOf(this);
+                return thisIndex >= 0 && thisIndex < File.ResultLines.Count - 1
+                    ? File.ResultLines[thisIndex + 1] : null;
+            }
+        }
+
+        public override ResultModelBase Previous
+        {
+            get
+            {
+                var thisIndex = File == null ? -1 : File.ResultLines.IndexOf(this);
+                return thisIndex > 0 ? File.ResultLines[thisIndex - 1] : null;
             }
         }
 
