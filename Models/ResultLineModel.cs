@@ -22,7 +22,7 @@ namespace VSRipGrep.Models
         {
             get
             {
-                return Line.ToString() + ", " + Column.ToString()+ ": " + Content;
+                return "(" + Line.ToString() + ", " + Column.ToString()+ ") " + Content;
             }
         }
 

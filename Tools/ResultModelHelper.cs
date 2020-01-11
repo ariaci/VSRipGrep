@@ -84,7 +84,7 @@ namespace VSRipGrep.Tools
             var fileModel = model as ResultFileModel;
             var lineModel = model as ResultLineModel;
 
-            if (fileModel != null && fileModel.ResultLines.Count == 0)
+            if (fileModel != null)
             {
                 fileModel.GotoFile();
                 return true;

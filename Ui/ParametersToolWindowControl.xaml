@@ -7,7 +7,7 @@
             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
             mc:Ignorable="d"
-            d:DesignHeight="180" d:DesignWidth="250"
+            d:DesignHeight="283.758" d:DesignWidth="250"
             Name="RipGrepParameters">
     <StackPanel Orientation="Vertical" Margin="10" Height="Auto">
         <TextBlock Margin="0,0,0,4"><Run Text="Find what:"/></TextBlock>
@@ -34,7 +34,23 @@
             <StackPanel Orientation="Vertical" Margin="10,4,4,4">
                 <CheckBox IsChecked="{Binding Path=IncludeBinaryFiles}" Margin="0,0,0,4" Content="Include binary files" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
                 <CheckBox IsChecked="{Binding Path=IncludeHiddenFilesOrDirectories}" Margin="0,0,0,4" Content="Include hidden files or directories" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
-                <CheckBox IsChecked="{Binding Path=RespectIgnoreFiles}" Margin="0,0,0,4" Content="Respect ignore files (.gitignore, etc.)" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox x:Name="RespectIgnoreFiles" IsChecked="{Binding Path=RespectIgnoreFiles}" Margin="0,0,0,4" Content="Respect ignore files (.gitignore, etc.)" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <StackPanel Orientation="Vertical" Margin="0,0,0,4">
+                    <StackPanel.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=RespectIgnoreFiles, Path=IsChecked}" Value="True">
+                                    <Setter Property="StackPanel.IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=RespectIgnoreFiles, Path=IsChecked}" Value="False">
+                                    <Setter Property="StackPanel.IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Margin="0,0,0,4"><Run Text="Look at these file types:"/></TextBlock>
+                    <TextBox TextWrapping="NoWrap" Text="{Binding Path=FileTypes}"/>
+                </StackPanel>
             </StackPanel>
         </Expander>
         <Button x:Name="FindAll" HorizontalAlignment="Right" Content="Find All" Width="75" Click="FindAll_Click">

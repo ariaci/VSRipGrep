@@ -25,7 +25,12 @@ namespace VSRipGrep.Models
         {
             get
             {
-                return Lines.Count > 0 ? File + " (" + Lines.Count.ToString() + ")" : File;
+                if (Lines.Count == 0)
+                {
+                    return File;
+                }
+
+                return File + " (" + Lines.Count.ToString() + (Lines.Count == 1 ? " item)" : " items)");
             }
         }
 
@@ -62,7 +67,7 @@ namespace VSRipGrep.Models
             var column = Convert.ToUInt32(splittedOutput[1]);
             if (!Lines.TryGetValue(line, out resultLine))
             {
-                resultLine = new ResultLineModel(this, line, column, splittedOutput[2]);
+                resultLine = new ResultLineModel(this, line, column, splittedOutput[2].Trim());
                 Lines.Add(line, resultLine);
                 ResultLines.Add(resultLine);
 

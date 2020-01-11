@@ -17,7 +17,7 @@ namespace VSRipGrep.Builder
         private static void AddArguments(ProcessStartInfo processInfo, Models.ParametersModel parameters)
         {
             processInfo.Arguments = @"""" + parameters.Pattern.Replace(@"""", @"""""") +
-                @""" --no-heading --no-ignore-messages --line-number --column";
+                @""" --no-heading --line-number --column";
 
             if (!parameters.UseRegularExpressions)
             {
@@ -48,9 +48,23 @@ namespace VSRipGrep.Builder
                 processInfo.Arguments += " --hidden";
             }
 
-            if (!parameters.RespectIgnoreFiles)
+            if (parameters.RespectIgnoreFiles)
+            {
+                processInfo.Arguments += " --no-ignore-messages";
+            }
+            else
             {
                 processInfo.Arguments += " --no-ignore --no-ignore-global";
+
+                var extensions = parameters.FileTypes.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var extension in extensions)
+                {
+                    var trimmedExtension = extension.Trim();
+                    if (!string.IsNullOrEmpty(trimmedExtension))
+                    {
+                        processInfo.Arguments += @" --glob """ + trimmedExtension + @"""";
+                    }
+                }
             }
         }
 

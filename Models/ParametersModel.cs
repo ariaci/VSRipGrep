@@ -50,6 +50,7 @@ namespace VSRipGrep.Models
         public bool IncludeBinaryFiles { get; set; } = false;
         public bool IncludeHiddenFilesOrDirectories { get; set; } = false;
         public bool RespectIgnoreFiles { get; set; } = false;
+        public string FileTypes { get; set; } = "";
 
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;
