@@ -26,6 +26,7 @@
         <Expander x:Name="FindOptions" Header="Find options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}" SizeChanged="Options_SizeChanged">
             <StackPanel Orientation="Vertical" Margin="10,4,4,4">
                 <CheckBox IsChecked="{Binding Path=MatchCase}" Margin="0,0,0,4" Content="Match case" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <CheckBox IsChecked="{Binding Path=MatchWholeWord}" Margin="0,0,0,4" Content="Match whole word" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
                 <CheckBox IsChecked="{Binding Path=UseRegularExpressions}" Margin="0,0,0,4" Content="Use regular expressions" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
                 <CheckBox IsChecked="{Binding Path=InvertMatching}" Margin="0,0,0,4" Content="Find files not containing pattern or string" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
             </StackPanel>

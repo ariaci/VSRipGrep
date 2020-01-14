@@ -45,6 +45,7 @@ namespace VSRipGrep.Models
 
         public string Pattern { get; set; } = "";
         public bool MatchCase { get; set; } = true;
+        public bool MatchWholeWord { get; set; } = false;
         public bool UseRegularExpressions { get; set; } = false;
         public bool InvertMatching { get; set; } = false;
         public bool IncludeBinaryFiles { get; set; } = false;

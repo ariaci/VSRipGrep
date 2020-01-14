@@ -43,6 +43,11 @@ namespace VSRipGrep.Builder
                 processInfo.Arguments += " --ignore-case";
             }
 
+            if (parameters.MatchWholeWord)
+            {
+                processInfo.Arguments += " --word-regexp";
+            }
+
             if (parameters.IncludeHiddenFilesOrDirectories)
             {
                 processInfo.Arguments += " --hidden";
