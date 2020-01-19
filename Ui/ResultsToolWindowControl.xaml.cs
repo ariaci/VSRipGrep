@@ -8,6 +8,7 @@
     using Microsoft.VisualStudio.OLE.Interop;
     using Microsoft.VisualStudio;
     using VSRipGrep.Tools;
+    using System.Windows;
 
     /// <summary>
     /// Interaction logic for ParametersToolWindowControl.
@@ -139,7 +140,7 @@
         private void Results_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var treeView = e.Source as TreeView;
-            var selectedUiElement = treeView?.InputHitTest(e.GetPosition(treeView)) as TextBlock;
+            var selectedUiElement = treeView?.InputHitTest(e.GetPosition(treeView)) as FrameworkContentElement;
 
             if (ResultModelHelper.Edit(selectedUiElement?.DataContext as ResultModelBase))
             {

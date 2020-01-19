@@ -5,8 +5,8 @@ namespace VSRipGrep.Models
 {
     public class ResultLineModel : ResultModelBase
     {
-        internal uint Line { get; private set; } = 0;
-        internal uint Column{ get; private set; } = 0;
+        public uint Line { get; private set; } = 0;
+        public uint Column{ get; private set; } = 0;
         internal string Content { get; private set; }
         internal ResultFileModel File { get; private set; } = null;
 
@@ -22,7 +22,7 @@ namespace VSRipGrep.Models
         {
             get
             {
-                return "(" + Line.ToString() + ", " + Column.ToString()+ ") " + Content;
+                return Content;
             }
         }
 

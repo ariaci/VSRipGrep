@@ -47,16 +47,28 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextColorKey}}" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource {x:Static vsp:EnvironmentColors.ToolWindowTextColorKey}}" />
                     <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
-                        <TextBlock x:Name="File" Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" />
+                        <TextBlock>
+                            <Run x:Name="File" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" FontWeight="Bold"/>
+                        </TextBlock>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding ResultLines.Count}" Value="0">
                                 <Setter TargetName="File" Property="FontWeight" Value="Normal"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type Models:ResultLineModel}">
-                        <TextBlock Text="{Binding Path=Text}" />
-                    </DataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type Models:ResultLineModel}">
+                        <TextBlock>
+                            <Run FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}">
+                                <Run.Text>
+                                    <MultiBinding StringFormat="({0}, {1}) " Mode="OneWay">
+                                        <Binding Path="Line"/>
+                                        <Binding Path="Column"/>
+                                    </MultiBinding>
+                                </Run.Text>
+                            </Run>
+                            <Run Text="{Binding Text, Mode=OneWay}"/>
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
                 </TreeView.Resources>
                 <TreeView.Style>
                     <Style>
