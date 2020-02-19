@@ -21,6 +21,19 @@ namespace VSRipGrep.Models
             Files = files;
         }
 
+        public string NumberOfChildItems
+        {
+            get
+            {
+                if (Lines.Count == 0)
+                {
+                    return string.Empty;
+                }
+
+                return " (" + Lines.Count.ToString() + (Lines.Count == 1 ? " item)" : " items)");
+            }
+        }
+
         public override string Text
         {
             get
@@ -30,7 +43,7 @@ namespace VSRipGrep.Models
                     return File;
                 }
 
-                return File + " (" + Lines.Count.ToString() + (Lines.Count == 1 ? " item)" : " items)");
+                return File + NumberOfChildItems;
             }
         }
 
@@ -71,7 +84,7 @@ namespace VSRipGrep.Models
                 Lines.Add(line, resultLine);
                 ResultLines.Add(resultLine);
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Text"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NumberOfChildItems"));
             }
         }
 

@@ -48,17 +48,13 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{DynamicResource {x:Static vsp:EnvironmentColors.ToolWindowTextColorKey}}" />
                     <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
                         <TextBlock>
-                            <Run x:Name="File" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" FontWeight="Bold"/>
+                            <Run Text="{Binding File, Mode=OneWay}"/>
+                            <Run Text="{Binding NumberOfChildItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontStyle="Italic"/>
                         </TextBlock>
-                        <HierarchicalDataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding ResultLines.Count}" Value="0">
-                                <Setter TargetName="File" Property="FontWeight" Value="Normal"/>
-                            </DataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type Models:ResultLineModel}">
                         <TextBlock>
-                            <Run FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}">
+                            <Run Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}">
                                 <Run.Text>
                                     <MultiBinding StringFormat="({0}, {1}) " Mode="OneWay">
                                         <Binding Path="Line"/>
