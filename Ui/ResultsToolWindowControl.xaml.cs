@@ -147,5 +147,20 @@
                 e.Handled = true;
             }
         }
+
+        private void Results_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter)
+            {
+                return;
+            }
+
+            var treeView = e.Source as TreeView;
+            var selectedModel = treeView.SelectedItem as ResultModelBase;
+            if (ResultModelHelper.Edit(selectedModel))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

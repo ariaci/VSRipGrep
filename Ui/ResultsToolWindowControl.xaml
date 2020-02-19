@@ -39,7 +39,8 @@
             <TreeView x:Name="Results" ItemsSource="{Binding ResultFiles}"
                     Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
                     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
-                    TreeViewItem.PreviewMouseDoubleClick="Results_MouseDoubleClick">
+                    TreeViewItem.PreviewMouseDoubleClick="Results_MouseDoubleClick"
+                    Keyboard.PreviewKeyUp="Results_PreviewKeyUp">
                 <TreeView.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveColorKey}}" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveTextColorKey}}" />
