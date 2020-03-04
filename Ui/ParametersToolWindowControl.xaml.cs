@@ -70,6 +70,15 @@
             }
         }
 
+        private void RipGrepParameters_Loaded(object sender, RoutedEventArgs e)
+        {
+            var toolWindow = Window.GetWindow(this);
+            if (toolWindow != null)
+            {
+                toolWindow.SizeToContent = SizeToContent.Height;
+            }
+        }
+
         private void Options_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var toolWindow = Window.GetWindow(this);
@@ -88,6 +97,18 @@
             toolWindow.MinHeight = height;
             toolWindow.MaxHeight = height;
             toolWindow.Height = height;
+        }
+
+        private void RipGrepParameters_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var toolWindow = Window.GetWindow(this);
+            if (toolWindow == null || !toolWindow.IsInitialized)
+            {
+                return;
+            }
+
+            toolWindow.MinHeight = toolWindow.Height;
+            toolWindow.MaxHeight = toolWindow.Height;
         }
     }
 }

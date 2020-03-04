@@ -7,13 +7,25 @@
             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
             mc:Ignorable="d"
-            d:DesignHeight="283.758" d:DesignWidth="250"
-            Name="RipGrepParameters">
-    <StackPanel Orientation="Vertical" Margin="10" Height="Auto">
-        <TextBlock Margin="0,0,0,4"><Run Text="Find what:"/></TextBlock>
-        <TextBox x:Name="Pattern" Margin="0,0,0,4" TextWrapping="NoWrap" Text="{Binding Path=Pattern}"/>
-        <TextBlock Margin="0,0,0,4"><Run Text="Look in:"/></TextBlock>
-        <Grid Margin="0,0,0,8" Height="Auto" Grid.Row="1">
+            d:DesignWidth="250"
+            Name="RipGrepParameters" Height="Auto"
+            Loaded="RipGrepParameters_Loaded"
+            SizeChanged="RipGrepParameters_SizeChanged">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0,0,0,4" Grid.Row="0"><Run Text="Find what:"/></TextBlock>
+        <TextBox x:Name="Pattern" Margin="0,0,0,4" TextWrapping="NoWrap" Text="{Binding Path=Pattern}" Grid.Row="1"/>
+        <TextBlock Margin="0,0,0,4" Grid.Row="2"><Run Text="Look in:"/></TextBlock>
+        <Grid Margin="0,0,0,8" Height="Auto" Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="5"/>
@@ -22,8 +34,8 @@
             <TextBox TextWrapping="NoWrap" Text="{Binding Path=Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content=" ... " Grid.Column="2" Click="SelectFolder_Click"/>
         </Grid>
-        <Separator Margin="0,0,0,4" />
-        <Expander x:Name="FindOptions" Header="Find options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}" SizeChanged="Options_SizeChanged">
+        <Separator Margin="0,0,0,4" Grid.Row="4" />
+        <Expander x:Name="FindOptions" Header="Find options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}" SizeChanged="Options_SizeChanged" Grid.Row="5">
             <StackPanel Orientation="Vertical" Margin="10,4,4,4">
                 <CheckBox IsChecked="{Binding Path=MatchCase}" Margin="0,0,0,4" Content="Match case" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
                 <CheckBox IsChecked="{Binding Path=MatchWholeWord}" Margin="0,0,0,4" Content="Match whole word" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
@@ -31,7 +43,7 @@
                 <CheckBox IsChecked="{Binding Path=InvertMatching}" Margin="0,0,0,4" Content="Find files not containing pattern or string" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
             </StackPanel>
         </Expander>
-        <Expander Header="File options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}" SizeChanged="Options_SizeChanged">
+        <Expander Header="File options" Height="Auto" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}" SizeChanged="Options_SizeChanged" Grid.Row="6">
             <StackPanel Orientation="Vertical" Margin="10,4,4,4">
                 <CheckBox IsChecked="{Binding Path=IncludeBinaryFiles}" Margin="0,0,0,4" Content="Include binary files" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
                 <CheckBox IsChecked="{Binding Path=IncludeHiddenFilesOrDirectories}" Margin="0,0,0,4" Content="Include hidden files or directories" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
@@ -54,7 +66,7 @@
                 </StackPanel>
             </StackPanel>
         </Expander>
-        <Button x:Name="FindAll" HorizontalAlignment="Right" Content="Find All" Width="75" Click="FindAll_Click">
+        <Button x:Name="FindAll" HorizontalAlignment="Right" Content="Find All" Width="75" Click="FindAll_Click" Grid.Row="7">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Triggers>
@@ -71,5 +83,5 @@
                 </Style>
             </Button.Style>
         </Button>
-    </StackPanel>
+    </Grid>
 </UserControl>
