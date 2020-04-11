@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="VSRipGrep.Ui.ResultsToolWindowControl"
+<UserControl x:Class="VSRipGrep.Ui.ResultsToolWindowControl"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -50,7 +50,7 @@
                     <HierarchicalDataTemplate DataType="{x:Type Models:ResultFileModel}" ItemsSource="{Binding ResultLines}">
                         <TextBlock>
                             <Run Text="{Binding File, Mode=OneWay}"/>
-                            <Run Text="{Binding NumberOfChildItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontStyle="Italic"/>
+                            <Run Text="{Binding NumberOfChildItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" FontStyle="Italic"/>
                         </TextBlock>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type Models:ResultLineModel}">
